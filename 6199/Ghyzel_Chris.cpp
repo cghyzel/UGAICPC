@@ -20,12 +20,13 @@ bool allConnected(int numOfCities) {
   }
   return true;
 }
+
 int minimumCable (int numOfCities, City * cities) {
   int cableLength = 0;
   bool first = true;
 
   while(!allConnected(numOfCities)) {
-    int lowestY = 0;
+    int lowestY = 9001;
     int numInLine = 0;
     for(int i = 0; i < numOfCities; i++) {
       if(cities[i].y < lowestY && !connected[i]) {
@@ -37,11 +38,40 @@ int minimumCable (int numOfCities, City * cities) {
         sameLineCities[ numInLine++ ] = i;
       }
     }
-    cableLength += connectCities( cities, numInLine);
+    if(first) {
+      first = false;
+      for(int i = 0; i < numInLine; i++) {
+	connected[sameLineCities[i]] = true;
+
+      }
+      
+    } else {
+      cableLength += connectCities( cities, numOfCities, numInLine);
+    }
   }
   return cableLength;
 }
-int connectCities(City * cities, int numInLine
+
+int connectCities (City * cities, int numOfCities, int numInLine) {
+  int minDistance, minCity;
+  int totalDistance = 0;
+
+  for(int i = 0; i < numInLine; i++) {
+    minDistance = 9001;
+    for(int j = 0; j < numInLine; j++) {
+      if(!connected[ sameLineCities[j] ]) {
+	for(int k = 0; k < numOfCities; k++) {
+	  if(connected[k] && (minDistance > distance(cities[k], cities[sameLineCities[j]]) ) ) { 
+	    minDistance = distance(cities[k], cities[sameLineCities[j]]);
+	    minCity = sameLineCities[j];
+	  }
+	}
+      }
+    }
+    totalDistance += minDistance;
+    connected[minCity] = true;
+  }
+}
 
 /** 
  * FOR THE GLORY OF CARTESIA!

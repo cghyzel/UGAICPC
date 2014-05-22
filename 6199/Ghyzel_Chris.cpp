@@ -45,6 +45,7 @@ int connectCities (int numOfCities, int numInLine) {
     totalDistance += minDistance;
     connected[minCity] = true;
   }
+  return totalDistance;
 }
 
 int minimumCable (int numOfCities) {

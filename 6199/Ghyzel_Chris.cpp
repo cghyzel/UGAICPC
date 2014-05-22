@@ -15,7 +15,7 @@ struct City {
 City * cities;
 
 int distance(City c1, City c2) {
-  return (int) sqrt(abs((c1.x * c1.x) - (c2.x * c2.x)) + abs((c1.y * c1.y) - (c2.y * c2.y)));
+  return (int) sqrt(abs((c1.x - c2.x) * (c2.x - c1.x)) + abs((c1.y - c2.y) * (c2.y - c1.y)));
 }
 
 bool allConnected(int numOfCities) {

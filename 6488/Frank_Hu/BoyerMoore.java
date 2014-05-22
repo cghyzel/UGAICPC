@@ -1,4 +1,3 @@
-package Tandems;
 
 //import Tandems.TandemRepeatFinder;
 

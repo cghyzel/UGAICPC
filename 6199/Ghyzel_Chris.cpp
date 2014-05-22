@@ -1,67 +1,41 @@
 #include <iostream> // string, cin, & cout
 #include <cmath> //sqrt & abs
+
 using namespace std;
 
 
-bool * connected = new bool[1000];
-int * sameLineCities = new int[1000];
+bool * connected;
+int * sameLineCities;
+
 struct City {
   int x;
   int y;
 };
 
+City * cities;
+
 int distance(City c1, City c2) {
-  return sqrt(abs((c1.x * c1.x) - (c2.x * c2.x)) + abs((c1.y * c1.y) - (c2.y * c2.y)));
+  return (int) sqrt(abs((c1.x * c1.x) - (c2.x * c2.x)) + abs((c1.y * c1.y) - (c2.y * c2.y)));
 }
 
 bool allConnected(int numOfCities) {
-  for(int i = 0; i < numOfCities) {
+  for(int i = 0; i < numOfCities; i++) {
     if(!connected[i]) return false;
   }
   return true;
 }
 
-int minimumCable (int numOfCities, City * cities) {
-  int cableLength = 0;
-  bool first = true;
 
-  while(!allConnected(numOfCities)) {
-    int lowestY = 9001;
-    int numInLine = 0;
-    for(int i = 0; i < numOfCities; i++) {
-      if(cities[i].y < lowestY && !connected[i]) {
-	lowestY = cities[i].y;
-      }
-    }
-    for(int i = 0; i < numOfCities; i++) {
-      if(cities[i].y == lowestY) {
-        sameLineCities[ numInLine++ ] = i;
-      }
-    }
-    if(first) {
-      first = false;
-      for(int i = 0; i < numInLine; i++) {
-	connected[sameLineCities[i]] = true;
+int connectCities (int numOfCities, int numInLine) {
+  int minCity, i, j, k;
+  int minDistance, totalDistance = 0;
 
-      }
-      
-    } else {
-      cableLength += connectCities( cities, numOfCities, numInLine);
-    }
-  }
-  return cableLength;
-}
-
-int connectCities (City * cities, int numOfCities, int numInLine) {
-  int minDistance, minCity;
-  int totalDistance = 0;
-
-  for(int i = 0; i < numInLine; i++) {
+  for(i = 0; i < numInLine; i++) {
     minDistance = 9001;
-    for(int j = 0; j < numInLine; j++) {
+    for(j = 0; j < numInLine; j++) {
       if(!connected[ sameLineCities[j] ]) {
-	for(int k = 0; k < numOfCities; k++) {
-	  if(connected[k] && (minDistance > distance(cities[k], cities[sameLineCities[j]]) ) ) { 
+	for(k = 0; k < numOfCities; k++) {
+	  if(connected[k] && (minDistance > distance( cities[k] , cities[ sameLineCities[j] ] ) ) ) { 
 	    minDistance = distance(cities[k], cities[sameLineCities[j]]);
 	    minCity = sameLineCities[j];
 	  }
@@ -73,15 +47,51 @@ int connectCities (City * cities, int numOfCities, int numInLine) {
   }
 }
 
+int minimumCable (int numOfCities) {
+  int maxInitialDistance, cableLength = 0;
+  bool first = true;
+  int lowestY, numInLine, i, j;
+
+  while(!allConnected(numOfCities)) {
+    lowestY = 9001;
+    numInLine = 0;
+    for(i = 0; i < numOfCities; i++) {
+      if(cities[i].y < lowestY && !connected[i]) {
+	lowestY = cities[i].y;
+      }
+    }
+    for(i = 0; i < numOfCities; i++) {
+      if(cities[i].y == lowestY) {
+        sameLineCities[ numInLine++ ] = i;
+      }
+    }
+    if(first) {
+      first = false;
+      for(i = 0; i < numInLine; i++) {
+	connected[sameLineCities[i]] = true;
+	for(j = i; j < numInLine; j++) {
+	  if(maxInitialDistance < distance(cities[(int) sameLineCities[i]], cities[ (int) sameLineCities[j]])) {
+	    maxInitialDistance = distance(cities[ (int) sameLineCities[i]], cities[ (int) sameLineCities[j]]);
+	  }
+	}
+      }
+    } else {
+      cableLength += connectCities( numOfCities, numInLine);
+    }
+  }
+  return cableLength;
+}
+
+
 /** 
  * FOR THE GLORY OF CARTESIA!
  */
 int main() {
-  int temp;
-  int numOfCities;
+  int temp, numOfCities;
   bool quit = false;
-  City * cities;
   cities = new City[1000];
+  connected = new bool[1000];
+  sameLineCities = new int[1000];
   //  City * array = new City[3];
   while(!quit) {
     cin >> numOfCities;
@@ -99,7 +109,7 @@ int main() {
 	  
 	}
       }
-      cout << minimumCable(numOfCities, cities) << endl;
+      cout << minimumCable(numOfCities) << endl;
 
     } else { // numOfCities == 0
 
@@ -108,4 +118,3 @@ int main() {
     }
   }
 }
-

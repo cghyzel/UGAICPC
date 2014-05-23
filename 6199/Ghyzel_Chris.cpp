@@ -1,12 +1,13 @@
 #include <iostream> // string, cin, & cout
 #include <cmath> //sqrt & abs
-#include <cstdio>
+#include <cstdio> //printf
 #include <cfloat>
 using namespace std;
 
+/* Global variables */
 
-bool * connected;
-int * sameLineCities;
+bool * connected; //tracks which cities are connected
+int * sameLineCities; //tracks cities in the same line
 
 struct City {
   int x;
@@ -15,10 +16,12 @@ struct City {
 
 City * cities;
 
+/* Returns the distance between two cities */
 double distance(City c1, City c2) {
   return sqrt(abs((c1.x - c2.x) * (c1.x - c2.x)) + abs((c1.y - c2.y) * (c1.y - c2.y)));
 }
 
+/* Returns true if all cities are connected */
 bool allConnected(int numOfCities) {
   for(int i = 0; i < numOfCities; i++) {
     if(!connected[i]) return false;
@@ -26,7 +29,7 @@ bool allConnected(int numOfCities) {
   return true;
 }
 
-
+/* Connects all of the cities with the same Y and returns the minimum amount of cable required */
 double connectCities (int numOfCities, int numInLine) {
   int minCity, i, j, k;
   double minDistance, totalDistance = 0;
@@ -51,44 +54,42 @@ double connectCities (int numOfCities, int numInLine) {
   }
   return totalDistance;
 }
-
+/* Calculates the minimum cable required to connect all the cities */
 double minimumCable (int numOfCities) {
   bool first = true;
   int lowestY, numInLine, i, j;
   double cableLength = 0;
   double maxInitialDistance = 0;
-
-
+  
   while(!allConnected(numOfCities)) {
     lowestY = 9001;
     numInLine = 0;
+    /* Find smallest y value of the unconnected cities*/
     for(i = 0; i < numOfCities; i++) {
-      // cout << i <<" : " << cities[i].y << endl;
-      if(cities[i].y < lowestY && !connected[i]) {
+      if(cities[i].y < lowestY & !connected[i] ) {
 	lowestY = cities[i].y;
       }
     }
-    // cout << lowestY << endl;
+    /* Track all of the cities in the same line with the lowest value */
     for(i = 0; i < numOfCities; i++) {
       if(cities[i].y == lowestY) {
         sameLineCities[ numInLine++ ] = i;
       }
     }
+    /* If it is the first set of cities, then just connect them all across the X axis */
     if(first) {
       first = false;
       for(i = 0; i < numInLine; i++) {
-	// cout << sameLineCities[i] << endl;
 	connected[sameLineCities[i]] = true;
 	for(j = i+1; j < numInLine; j++) {
-	  // cout << "Distance between cities: " << distance(cities[sameLineCities[i]], cities[sameLineCities[j]]) << endl;
 	  if(maxInitialDistance < distance(cities[ sameLineCities[i]], cities[ sameLineCities[j]])) {
 	    maxInitialDistance = distance(cities[ sameLineCities[i]], cities[ sameLineCities[j]]);
 	  }
 	}
       }
-      // cout << "Initial Distance: " << maxInitialDistance << endl;
       cableLength = maxInitialDistance;
     } else {
+      /* Connect the line of cities */
       cableLength += connectCities( numOfCities, numInLine);
     }
   }

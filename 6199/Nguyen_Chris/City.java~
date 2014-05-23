@@ -1,3 +1,5 @@
+package icpc;
+
 import java.util.Random;
 
 public class City implements Comparable<City> {

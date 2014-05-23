@@ -15,7 +15,7 @@ struct City {
 
 City * cities;
 
-float distance(City c1, City c2) {
+double distance(City c1, City c2) {
   return sqrt(abs((c1.x - c2.x) * (c1.x - c2.x)) + abs((c1.y - c2.y) * (c1.y - c2.y)));
 }
 
@@ -27,34 +27,36 @@ bool allConnected(int numOfCities) {
 }
 
 
-float connectCities (int numOfCities, int numInLine) {
+double connectCities (int numOfCities, int numInLine) {
   int minCity, i, j, k;
-  float minDistance, totalDistance = 0;
+  double minDistance, totalDistance = 0;
 
   for(i = 0; i < numInLine; i++) {
-    minDistance = 9001;
+    minDistance = 1000000;
     minCity = 0;
     for(j = 0; j < numInLine; j++) {
       if(!connected[ sameLineCities[j] ]) {
 	for(k = 0; k < numOfCities; k++) {
-	  if(connected[k] && (minDistance > distance( cities[k] , cities[ sameLineCities[j] ] ) ) ) { 
+	  if(connected[k] & ( minDistance > distance( cities[k] , cities[ sameLineCities[j] ] ) ) ) { 
 	    minDistance = distance(cities[k], cities[sameLineCities[j]]);
 	    minCity = sameLineCities[j];
 	  }
 	}
       }
     }
-    totalDistance += minDistance;
-    connected[minCity] = true;
+    if(minDistance != 1000000){
+      totalDistance += minDistance;
+      connected[minCity] = true;
+    }
   }
   return totalDistance;
 }
 
-float minimumCable (int numOfCities) {
+double minimumCable (int numOfCities) {
   bool first = true;
   int lowestY, numInLine, i, j;
-  float cableLength = 0;
-  int maxInitialDistance = 0;
+  double cableLength = 0;
+  double maxInitialDistance = 0;
 
 
   while(!allConnected(numOfCities)) {
@@ -85,7 +87,7 @@ float minimumCable (int numOfCities) {
 	}
       }
       // cout << "Initial Distance: " << maxInitialDistance << endl;
-      cableLength += maxInitialDistance;
+      cableLength = maxInitialDistance;
     } else {
       cableLength += connectCities( numOfCities, numInLine);
     }
@@ -106,11 +108,11 @@ int main() {
 
   while(!quit) {
     cin >> numOfCities;
-    if (numOfCities == 1) { // numOfCities != 0
+    if (numOfCities == 1) { 
       cin >> temp;
       cin >> temp;
       printf("%.2f\n", (float) 0);
-    } else if(numOfCities) { 
+    } else if(numOfCities) { // numOfCities != 0
       
       for(int i = 0; i < numOfCities*2; i++) {
 

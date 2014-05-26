@@ -1,7 +1,7 @@
 /*
   Chris Nguyen
   May 25th, 2014
-  Goal: a, b, c, d must equal each other after every round of substraction.
+  Goal: a, b, c, d must equal each other after some round of substraction.
         a = |a-b|, b = |b-c|, c = |c-d|, d = |d-a| (use the values from the previous not updated value of current round)
   Inputs: 4 numbers on each line representing a,b,c,d respectively
           0 0 0 0 marks the end of inputs
@@ -18,7 +18,7 @@ int temp;
     int minimum = 0;
     cin >> a >> b >> c >> d;
     
-    if ( !(a || b || c || d) ) exit(0); // if ( 0 && 0 && 0 && 0 )
+    if ( !(a || b || c || d) ) exit(0); // if ( !0 && !0 && !0 && !0 )
 
     // brute force evalulation
     while (a != b || b != c || c != d || d != a) {

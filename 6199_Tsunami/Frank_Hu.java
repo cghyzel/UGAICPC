@@ -1,3 +1,5 @@
+// Not solution, doesn't work
+
 import java.util.ArrayList;
 import java.util.Scanner;
 

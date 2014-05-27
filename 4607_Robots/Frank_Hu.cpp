@@ -2,7 +2,7 @@
 // Name        : 4607.cpp
 // Author      :  Frank Hu
 // Version     :
-// Copyright   : Your copyright notice
+// Copyright   : Beerware
 // Description : Robotsin C++, Ansi-style
 //============================================================================
 

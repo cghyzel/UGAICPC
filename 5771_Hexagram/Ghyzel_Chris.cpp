@@ -35,8 +35,8 @@ int main() {
   while(notEnded) {
     total = unordered[0];
     for(int i = 1; i < 12; i++) {
-    cin >> unordered[i];
-    total += unordered[i];
+      cin >> unordered[i];
+      total += unordered[i];
     }
     // No numbers are in ordered list
     for(int i = 0; i < 12; i++) {

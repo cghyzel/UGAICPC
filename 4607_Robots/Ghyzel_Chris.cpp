@@ -1,137 +1,112 @@
 #include <iostream>
+#include <vector>
+#include <map>
 #include <cmath>
-#include <cstdio>
 
 using namespace std;
-struct Target {
+
+
+/**
+ * Example solution with dijkstras.
+ * Does not work within time limit, but a good example of how to build a graph for dijkstras nonetheless.
+ */
+typedef double weight; //int ?  
+int n;  // n nodes
+vector<int> rel [1002]; //rel[i][j]; the j-th neighbor of i
+vector<weight> edge [1002]; // edge[i][j]; the length of edge i -> r[i][j] 
+weight dist [1002]; //minimum distance from initial node
+int previouslyAccessed [1002]; //previously accessed node for minimum path to node i is previouslyAccess[i]
+multimap<weight, int> h; // (candidate distance, node id)
+
+struct target {
   int x;
   int y;
-  int penalty;
+  int p; //penalty
 };
-// Candidate set
-Target * targets;
-int numOfTargets;
-int currentX;
-int currentY;
-int minIndex;
-//feasibility tracking
-int previousTarget;
 
-double distanceFromCurrent(int target) {
-  return sqrt(((currentX - targets[target].x) * (currentX - targets[target].x)) + ((currentY - targets[target].y) * (currentY - targets[target].y)));
-}
-double distanceToEnd(int target) {
-  return sqrt(((100 - targets[target].x) * (100 - targets[target].x)) + ((100 - targets[target].y) * (100 - targets[target].y)));
-}
-/*
- * evalutes the total penalty to get to the end
- */
-double timeToEnd() {
-  double endTime = 1 + sqrt(((currentX - 100) * (currentX - 100)) + ((currentY - 100) * (currentY - 100)));
-  for(int i = previousTarget+1; i < numOfTargets; i++) {
-    endTime += targets[i].penalty;
-    //    cout << targets[i].penalty;
+vector<target> targets;
+
+/* Calculate distance between nodes i and j */
+weight calculateTimeCost(int i, int j) {
+  int a;
+  weight total = 1 + sqrt(((targets[i].x - targets[j].x) * (targets[i].x - targets[j].x)) + ((targets[i].y - targets[j].y) * (targets[i].y - targets[j].y)));
+  // Calculate penalty incurred 
+  for(a = i + 1; a < j; a++) {
+    total += targets[a].p;
   }
-  return endTime;
-}
-/*
- * evaluates the local penalty for each target
- */
-double totalPenalty(int target) {
-  //1 second stop
-  double penalty = 1; 
-  //add the penalty for all targets before it 
-  for(int i = previousTarget+1; i < target; i++) {
-    penalty += targets[i].penalty;
-  }
-  penalty += distanceFromCurrent(target);
-  penalty += distanceToEnd(target);
-  return penalty;
+  return total;
 }
 
-/*
- * Selection function
- * Returns double with the minimum time penalty
- */
-double selectTarget() {
-  double minPenalty = 99999999;
-  
-  //  cout << "Beginning selection" << endl;
-  for(int i = previousTarget+1; i < numOfTargets; i++) {
-    //cout << i << ": " << totalPenalty(i) << endl;
-    if(minPenalty >= totalPenalty(i)) {
-       minPenalty = totalPenalty(i);
-      minIndex = i;
+void init(int n) {
+  int i = 0, j = 0;
+  target temp;
+  //clear memory
+  targets.clear();
+  for(i = 0; i < n; i++) {
+    rel[i].clear();
+    edge[i].clear();
+  }
+  /* read graph */
+  temp.x = 0;
+  temp.y = 0;
+  temp.p = 0;
+  targets.push_back(temp);
+  for(i = 0; i < (n); i++) {
+    cin >> temp.x;
+    cin >> temp.y;
+    cin >> temp.p;
+    targets.push_back(temp);
+  }
+  temp.x = 100;
+  temp.y = 100;
+  temp.p = 1;
+  targets.push_back(temp);
+
+  /* Calculate edges and relationships */
+  for(i = 0; i < n + 2; i++) {
+    for(j = i + 1; j < n + 2; j++) {
+      rel[i].push_back(j);
+      edge[i].push_back(calculateTimeCost(i, j));
     }
   }
   
-  //cout << minIndex;
-  return minPenalty;
+  for(i = 0; i < n+2; i++) {
+    dist[i] = -1; // represent infinite cost with -1
+  }
 }
-/*
- * Traverse the course
- * Returns total time
- */
-double traverseCourse() {
-  bool notFinished = true;
-  double totalTime = 0;
-  double lowestTimeToATarget;
-  while(notFinished) {
-    lowestTimeToATarget = selectTarget();
 
-    if(lowestTimeToATarget >= timeToEnd()) {
-      //cout << timeToEnd() << " yatta!" <<  endl; 
-      totalTime += timeToEnd();
-      notFinished = false;
-    }
-    else {
-      //cout << lowestTimeToATarget << endl;
-      totalTime+=lowestTimeToATarget;
-      totalTime-=distanceToEnd(minIndex);
-      previousTarget = minIndex;
-      currentX = targets[previousTarget].x;
-      currentY = targets[previousTarget].y;
+// in the tree h <weight, int> : <candidate distance, node id>
+void dijsktra(int start) {
+  weight distance =0, temp =0;
+  int currentNode =0, i =0, j =0;
+  multimap<weight, int>::iterator iter;
+  h.clear();
+  dist[start] = 0;
+  previouslyAccessed[start] = -1; //start has nothing previously accessed
+  h.insert(multimap<weight, int>::value_type(0, start));
+  while(!h.empty()) {
+    iter = h.begin();
+    distance = (*iter).first; // the distance
+    currentNode = (*iter).second; // the node
+    h.erase(iter);
+    for(i = 0; i< rel[currentNode].size(); i++) { //for each neighbor of v
+      temp = distance + edge[currentNode][i];
+      j = rel[currentNode][i]; 
+      if(dist[j] < 0 || temp < dist[j]) {
+	dist[j] = temp;
+	//	cout << "Distance to node " << j << ":" << temp << endl;
+	previouslyAccessed[j] = currentNode;
+	h.insert(multimap<weight, int>::value_type(temp, j));
+      } 
     }
   }
-  return totalTime;
 }
+
 int main() {
-  double solution;
-
-  bool quit = false;
-  targets = new Target[1000];
-
-  while (!quit) {
-    /* Set up */
-    previousTarget = -1;
-    currentX = 0;
-    currentY = 0;
-    cin >> numOfTargets;
-    
-    if (numOfTargets) { // numOfTargets != 0
-      
-      for(int i = 0; i < numOfTargets*3; i++) {
-	
-	if(i%3 == 1) { //Y
-
-	  cin >> targets[i/3].y;
-      
-	} else if (i % 3) { // Penalty
-
-	  cin >> targets[i/3].penalty;
-	  //	  cout << "\nX: " << targets[i/3].x << " Y: "  << targets[i/3].y << "P: "<< targets[i/3].penalty << endl;
-	} else { // X
-	  
-	  cin >> targets[i/3].x;
-	  
-	}
-      }
-      solution = traverseCourse();
-      solution = round( solution * 1000.0 ) / 1000.0;
-      
-      printf("%.3f\n", solution);
-    } else { // numOfTargets == 0
-      quit = true;
-    }
+  int n;
+  while(cin >> n) {
+    init(n);
+    dijsktra(0);
+    cout << dist[n+1] << endl;
   }
 }

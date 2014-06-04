@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <map>
 #include <cmath>
@@ -10,7 +11,7 @@ using namespace std;
  * Example solution with dijkstras.
  * Does not work within time limit, but a good example of how to build a graph for dijkstras nonetheless.
  */
-typedef double weight; //int ?  
+typedef long double weight; //int ?  
 int n;  // n nodes
 vector<int> rel [1002]; //rel[i][j]; the j-th neighbor of i
 vector<weight> edge [1002]; // edge[i][j]; the length of edge i -> r[i][j] 
@@ -34,15 +35,17 @@ weight calculateTimeCost(int i, int j) {
   for(a = i + 1; a < j; a++) {
     total += targets[a].p;
   }
+  cout << "Node: " << i << " Node: " <<  j << " Total: " << total << endl;
   return total;
 }
 
 void init(int n) {
   int i = 0, j = 0;
+  weight calculatedTimeCost = 0;
   target temp;
   //clear memory
   targets.clear();
-  for(i = 0; i < n; i++) {
+  for(i = 0; i < n+2; i++) {
     rel[i].clear();
     edge[i].clear();
   }
@@ -65,8 +68,13 @@ void init(int n) {
   /* Calculate edges and relationships */
   for(i = 0; i < n + 2; i++) {
     for(j = i + 1; j < n + 2; j++) {
-      rel[i].push_back(j);
-      edge[i].push_back(calculateTimeCost(i, j));
+      calculatedTimeCost = calculateTimeCost(i, j);
+      //     if(calculatedTimeCost < 8000) {
+	rel[i].push_back(j);
+	edge[i].push_back(calculatedTimeCost);
+	//      } else {
+	//	j = n + 2;
+	//      }
     }
   }
   
@@ -104,9 +112,15 @@ void dijsktra(int start) {
 
 int main() {
   int n;
-  while(cin >> n) {
+  weight temp;
+  cin >> n;
+  while(n) {
     init(n);
     dijsktra(0);
-    cout << dist[n+1] << endl;
+    // round number 
+
+    temp = round( dist[n+1] * 1000.0 ) / 1000.0;
+    cout << " Solution: " << fixed << setprecision(3) << temp << endl;
+    cin >> n;
   }
 }

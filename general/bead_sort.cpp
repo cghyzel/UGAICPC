@@ -4,6 +4,7 @@
 using namespace std;
 
 // Literally got this from RosettaCode.org
+// This "distributes" beads from 0 - distance in an element, adding one for however much is in the element that is passed in
 void distribute(int dist, vector<int> &List) {
 
   // So, what this is doing is finding the largest distance if the current 

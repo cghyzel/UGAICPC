@@ -1,4 +1,4 @@
-/*
+/*s
  * MineSweeper.cpp
  *
  *  Created on: Jun 10, 2014

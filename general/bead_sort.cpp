@@ -3,7 +3,7 @@
 #include <vector>
 using namespace std;
 
-// Literally got this from RosettaCode.org
+// Literally got this method "distribute" from RosettaCode.org
 // This "distributes" beads from 0 - distance in an element, adding one for however much is in the element that is passed in
 void distribute(int dist, vector<int> &List) {
 

@@ -4,6 +4,7 @@ using namespace std;
 
 bool connected[999] {true};
 int depots [1000] {0};
+int total [1000];
 int minStrategicValue, numDepots;
 int calculateStrategicValue() {
   int strategicValue= 0;
@@ -19,10 +20,16 @@ int calculateStrategicValue() {
     }
   }
   cout << endl; */
-  for(int i = 0; i < numDepots; i++) {
-    for(int j = i; j < numDepots - 1 && connected[j]; j++) {
+  for(int i = 1; i < numDepots; i++) {
+    /*for(int j = i; j < numDepots - 1 && connected[j]; j++) {
       
       strategicValue += depots[i] * depots[j+1];
+      }*/
+    if(connected[i-1]) {
+      total[i] = total[i-1] + depots[i];
+      strategicValue += depots[i] * total[i-1];
+    } else {
+      total[i] = depots[i];
     }
   }
   //  cout << "Calculated Strategic value: " << strategicValue << endl;
@@ -69,6 +76,7 @@ int main() {
       connected[i] = true;
     }
     minStrategicValue = 9999999;
+    total[0] = depots[0];
     bomb(0, bombs);
     cout << minStrategicValue << endl;
     cin >> numDepots >> bombs;

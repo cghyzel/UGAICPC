@@ -1,0 +1,34 @@
+#include <iostream>
+#include <stdio.h>
+#include <vector>
+
+using namespace std;
+
+// This is comparing the two words, word1 and word 2, and the array d_L_Matrix
+
+int main(){
+  int ** d_L_Matrix;
+  char * word1;
+  char * word2;
+  // For sake of simplicity, we will consider the length of word1 as length of word1Length
+  int word1Length;
+  int word2Length;
+  // We take in the input for word1 and word 2 and then the lengths
+  cin >> word1;
+  cin >> word2;
+  cin >> word1Length;
+  cin >> word2Length;
+  d_L_Matrix = int*[word1Length];
+  for(int i = 0; i < word1Length; ++i){
+    d_L_Matrix = int[word2Length];
+  }
+  for(int i =0; i< word1Length;++i){
+  d_L_Matrix[0][i] = 0;
+  }
+  for(int i =0 ;i < word2Length; ++i){
+  d_L_Matrix[i][0] = 0;
+  }
+  
+  
+
+}

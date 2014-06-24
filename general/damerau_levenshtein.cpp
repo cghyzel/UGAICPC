@@ -6,6 +6,14 @@ using namespace std;
 
 // This is comparing the two words, word1 and word 2, and the array d_L_Matrix
 
+
+int minimum(int & num1, int & num2, int & num3){
+    return std::min(std::min(num1, num2), num3);
+}
+
+int minimum(int & num1, int & num2){
+  return std:: min(num1,num2);
+}
 int main(){
   // Damerau Levenshtein Matrix
   int ** d_L_Matrix;

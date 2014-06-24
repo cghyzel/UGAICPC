@@ -66,5 +66,5 @@ int main(){
   }
  cout << d_L_Matrix[word1Length][word2Length]; // Prints the damerau-Levenshtein distance in accordance to the penalties
                                                 // of spell checker, you can change the penalties to 1 to make it 
-                                                // work in accordance with the regular damerau-Levenshtein Formula
+                                                // work in accordance with the regular damerau-Levenshtein formula
 }

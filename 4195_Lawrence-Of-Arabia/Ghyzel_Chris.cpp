@@ -8,8 +8,8 @@ int total [1000];
 int minStrategicValue, numDepots;
 int calculateStrategicValue() {
   int strategicValue= 0;
-  //  cout << "Calculating Strategic value" << endl;
-  /*  for(int i = 0; i < numDepots; i++) {
+   cout << "Calculating Strategic value" << endl;
+    for(int i = 0; i < numDepots; i++) {
     cout << depots[i];
     if(i < numDepots -1) {
       if(connected[i]) {
@@ -19,7 +19,7 @@ int calculateStrategicValue() {
       }
     }
   }
-  cout << endl; */
+  cout << endl;
   for(int i = 1; i < numDepots; i++) {
     /*for(int j = i; j < numDepots - 1 && connected[j]; j++) {
       
@@ -37,14 +37,14 @@ int calculateStrategicValue() {
 }
 void bomb(int loc, int bombs)  {
   int temp = loc;
-  //  cout << "Bombs Remaining: " << bombs << endl;
+    cout << "Bombs Remaining: " << bombs << endl;
   if(!bombs) {
     temp = calculateStrategicValue();
     if( temp < minStrategicValue) {
       minStrategicValue = temp;
     }
   } else if(bombs == ((numDepots -1) - loc) ) {
-    //    cout << "bombing remaining " << endl;
+        cout << "bombing remaining " << endl;
     while(temp < numDepots -1) {
       connected[temp++] = false;
     }
@@ -67,8 +67,8 @@ int main() {
   int i, bombs;
   cin >> numDepots >> bombs;
   while(numDepots || bombs) { // n != 0
-    //    cout << "Number of Depots: " << numDepots << endl;
-    //    cout << "Number of bombs: " << bombs << endl;
+        cout << "Number of Depots: " << numDepots << endl;
+        cout << "Number of bombs: " << bombs << endl;
     for(i = 0; i < numDepots; i++) {
       cin >> depots[i];
     }

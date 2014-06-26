@@ -27,9 +27,11 @@ int main(){
   cin >> word2;
   cin >> word1Length;
   cin >> word2Length;
+  word1Length+=1;
+  word2Length+=1;
   d_L_Matrix = int*[word1Length];
   for(int i = 0; i < word1Length; ++i){
-    d_L_Matrix = int[word2Length];
+    d_L_Matrix[i] = int[word2Length];
   }
   for(int i =0; i< word1Length;++i){
     d_L_Matrix[0][i] = i;

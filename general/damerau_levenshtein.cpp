@@ -58,13 +58,13 @@ int main(){
       
         d_L_Matrix[i][j] = minimum(d_L_Matrix[i-1][j] + 2, // THis is a deletion mistake
                                 d_L_Matrix[i][j-1] + 2, // THis is the insertion mistake
-                                d_L_Matrix[i-1][j-1] + cost}; // this last comparison is a substitution mistake
+                                d_L_Matrix[i-1][j-1] + cost); // this last comparison is a substitution mistake
                                 
         if(cost == 0){
                       
         }else{
           cost = 1;
-        }                                
+        }                 
         if(i > 1 && j > 1 && word1[i] == word2[j-1] && word1[i-1] == word2[j]){
           d_L_Matrix[i][j] = minimum(d_L_Matrix[i][j], d_L_Matrix[i-2][j-2] + cost); // Comparison between transposition and the other three mistakes, 
         }

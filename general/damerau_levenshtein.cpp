@@ -64,7 +64,7 @@ int main(){
                       
         }else{
           cost = 1;
-        }                                }
+        }                                
         if(i > 1 && j > 1 && word1[i] == word2[j-1] && word1[i-1] == word2[j]){
           d_L_Matrix[i][j] = minimum(d_L_Matrix[i][j], d_L_Matrix[i-2][j-2] + cost); // Comparison between transposition and the other three mistakes, 
         }

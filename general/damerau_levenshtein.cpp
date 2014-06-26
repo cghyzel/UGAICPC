@@ -17,18 +17,23 @@ int minimum(int & num1, int & num2){
 int main(){
   // Damerau Levenshtein Matrix
   int ** d_L_Matrix;
-  char * word1;
-  char * word2;
+  string word1String;
+  string word2String;
   // For sake of simplicity, we will consider the length of word1 as length of word1Length
   int word1Length;
   int word2Length;
   // We take in the input for word1 and word 2 and then the lengths
-  cin >> word1;
-  cin >> word2;
+  cin >> word1String;
+  cin >> word2String;
   cin >> word1Length;
   cin >> word2Length;
   word1Length+=1;
   word2Length+=1;
+  char word1[word1Length+1];
+  char word2[word2Length+1];
+  strcpy(word1, word1String.c_str());
+  strcpy(word2, word2String.c_str());
+  
   d_L_Matrix = int*[word1Length];
   for(int i = 0; i < word1Length; ++i){
     d_L_Matrix[i] = int[word2Length];

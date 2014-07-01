@@ -50,7 +50,7 @@ int main(){
     for(int j =0 ;j< word2Length; ++j){
       // If the letter in the word at word1[i] is the same as word[j] we will set the cos to be 0, if not then 2,
       // In terms of the problem spell checker, icpc, in the regular implementation they use 1,
-        if(word1[i] == word[j]){
+        if(word1[i] == word2[j]){
           cost = 0;
         }else{
           cost = 2;

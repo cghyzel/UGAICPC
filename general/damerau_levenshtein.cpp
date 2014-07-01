@@ -34,9 +34,9 @@ int main(){
   strcpy(word1, word1String.c_str());
   strcpy(word2, word2String.c_str());
   
-  d_L_Matrix = int*[word1Length];
+  d_L_Matrix = new int*[word1Length];
   for(int i = 0; i < word1Length; ++i){
-    d_L_Matrix[i] = int[word2Length];
+    d_L_Matrix[i] = new int[word2Length];
   }
   for(int i =0; i< word1Length;++i){
     d_L_Matrix[0][i] = i;

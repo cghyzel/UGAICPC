@@ -1,84 +1,76 @@
-#include <iostream> 
+#include <iostream>
 
 using namespace std;
 
-bool connected[999] {true};
-int depots [1000] {0};
-int total [1000];
-int minStrategicValue, numDepots;
-int calculateStrategicValue() {
-  int strategicValue= 0;
-   cout << "Calculating Strategic value" << endl;
-    for(int i = 0; i < numDepots; i++) {
-    cout << depots[i];
-    if(i < numDepots -1) {
-      if(connected[i]) {
-	cout << " - ";
-      } else {
-	cout << " x ";
+int * depots;
+int ***costs;
+
+int cost0(int begin, int end);
+int cost(int begin, int end, int bomb);
+
+int main() {
+  int n = 0, m = 0, i = 0, j = 0, k = 0;
+  //  int *depots;
+  depots = new int[1000];
+  //  int ***costs;// [101]; //[1001][1000];
+
+  costs = new int**[1001];
+  for (i = 0; i < 1001; ++i) {
+    costs[i] = new int*[1001];
+    for (j = 0; j < 1001; ++j) {
+      costs[i][j] = new int[1000];
+    }
+  }
+
+  //    cout << " done" << endl;
+
+  while(  cin >> n >> m) {
+    if (n == 0 && m == 0) return 0;
+    for(i = 0; i < n+1; ++i) {
+      if(i != n)
+	cin >> depots[i];
+      for(j = 0; j < n+1; ++j) {
+	for(k = 0; k < m+1; ++k) {
+	  costs[i][j][k] = -1;
+	}
       }
     }
+    //    cout << " done" << endl;
+    cout << cost(0, n-1, m) << endl;
+    //cin >> n >> m;
   }
-  cout << endl;
-  for(int i = 1; i < numDepots; i++) {
-    /*for(int j = i; j < numDepots - 1 && connected[j]; j++) {
-      
-      strategicValue += depots[i] * depots[j+1];
-      }*/
-    if(connected[i-1]) {
-      total[i] = total[i-1] + depots[i];
-      strategicValue += depots[i] * total[i-1];
-    } else {
-      total[i] = depots[i];
-    }
-  }
-  //  cout << "Calculated Strategic value: " << strategicValue << endl;
-  return strategicValue;
+  return 0;
 }
-void bomb(int loc, int bombs)  {
-  int temp = loc;
-    cout << "Bombs Remaining: " << bombs << endl;
-  if(!bombs) {
-    temp = calculateStrategicValue();
-    if( temp < minStrategicValue) {
-      minStrategicValue = temp;
+
+
+int cost0(int begin, int end) {
+  int total = 0;
+  int i, j;
+  for(i = begin; i < end+1; ++i) {
+    for(j = i + 1; j < end+1; ++j) {
+      total+=depots[i]*depots[j];
     }
-  } else if(bombs == ((numDepots -1) - loc) ) {
-        cout << "bombing remaining " << endl;
-    while(temp < numDepots -1) {
-      connected[temp++] = false;
-    }
-    if((temp = calculateStrategicValue()) < minStrategicValue) {
-      minStrategicValue = temp;
-    }
-    temp = loc;
-    while(temp < numDepots -1) {
-      connected[temp++] = true;
-    }
-  } else {
-    connected[loc] = true;
-    bomb(loc + 1, bombs);
-    connected[loc] = false;
-    bomb(loc + 1, bombs -1);
-    connected[loc] = true;
   }
+  return total;
 }
-int main() {
-  int i, bombs;
-  cin >> numDepots >> bombs;
-  while(numDepots || bombs) { // n != 0
-        cout << "Number of Depots: " << numDepots << endl;
-        cout << "Number of bombs: " << bombs << endl;
-    for(i = 0; i < numDepots; i++) {
-      cin >> depots[i];
-    }
-    for(i = 0; i < numDepots -1; i++) {
-      connected[i] = true;
-    }
-    minStrategicValue = 9999999;
-    total[0] = depots[0];
-    bomb(0, bombs);
-    cout << minStrategicValue << endl;
-    cin >> numDepots >> bombs;
+int cost(int begin, int end, int bomb) {
+  if(costs[begin][end][bomb] > -1) {
+    return costs[begin][end][bomb];
   }
+  if(bomb == 0) {
+    //cout << "begin " << begin << " end " << end << " bomb " << bomb << " cost " << cost(begin, end) << endl;
+    return (costs[begin][end][bomb] = cost0(begin, end));
+  }
+  int min = 999999999;
+  int temp;
+  for(int i = begin; i <  end - bomb; ++i) {
+    temp = (cost(begin, i, 0) + cost(i + 1, end, bomb -1));
+    if(min > temp) {
+      min = temp;
+    }
+  }
+  //cout << "begin " << begin << " end " << end << " bomb " << bomb << " cost " << min << endl;
+  return (costs[begin][end][bomb] = min);
+ 
+
 }

@@ -1,17 +1,18 @@
 #include <iostream>
 #include <stdio.h>
 #include <vector>
+#include <string.h>
 
 using namespace std;
 
 // This is comparing the two words, word1 and word 2, and the array d_L_Matrix
 
 
-int minimum(int & num1, int & num2, int & num3){
+int minimum(int num1, int num2, int num3){
     return std::min(std::min(num1, num2), num3);
 }
 
-int minimum(int & num1, int & num2){
+int minimum(int num1, int num2){
   return std:: min(num1,num2);
 }
 int main(){
@@ -34,9 +35,9 @@ int main(){
   strcpy(word1, word1String.c_str());
   strcpy(word2, word2String.c_str());
   
-  d_L_Matrix = int*[word1Length];
+  d_L_Matrix = new int*[word1Length];
   for(int i = 0; i < word1Length; ++i){
-    d_L_Matrix[i] = int[word2Length];
+    d_L_Matrix[i] = new int[word2Length];
   }
   for(int i =0; i< word1Length;++i){
     d_L_Matrix[0][i] = i;
@@ -49,7 +50,7 @@ int main(){
     for(int j =0 ;j< word2Length; ++j){
       // If the letter in the word at word1[i] is the same as word[j] we will set the cos to be 0, if not then 2,
       // In terms of the problem spell checker, icpc, in the regular implementation they use 1,
-        if(word1[i] == word[j]){
+        if(word1[i] == word2[j]){
           cost = 0;
         }else{
           cost = 2;

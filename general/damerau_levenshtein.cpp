@@ -5,7 +5,7 @@
 
 using namespace std;
 
-// This is comparing the two words, word1 and word 2, and the array d_L_Matrix
+// This is comparing the two words, word1 and word 2, and the array d_L_Matrixs
 
 
 int minimum(int num1, int num2, int num3){
@@ -30,10 +30,10 @@ int main(){
   cin >> word2Length;
   word1Length+=1;
   word2Length+=1;
-  char word1[word1Length+1];
-  char word2[word2Length+1];
-  strcpy(word1, word1String.c_str());
-  strcpy(word2, word2String.c_str());
+  word1String = " "  + word1String;
+ word2String = " " + word2String;
+  char word1[] = word1String;
+  char word2[] = word2String;
   
   d_L_Matrix = new int*[word1Length];
   for(int i = 0; i < word1Length; ++i){

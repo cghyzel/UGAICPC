@@ -2,8 +2,8 @@
 
 using namespace std;
 
-int * depots;
-int ***costs;
+int depots[1000];
+int costs[1001][1001][1000];
 
 int cost0(int begin, int end);
 int cost(int begin, int end, int bomb);
@@ -11,7 +11,7 @@ int cost(int begin, int end, int bomb);
 int main() {
   int n = 0, m = 0, i = 0, j = 0, k = 0;
   //  int *depots;
-  depots = new int[1000];
+  /*  depots = new int[1000];
   //  int ***costs;// [101]; //[1001][1000];
 
   costs = new int**[1001];
@@ -20,7 +20,7 @@ int main() {
     for (j = 0; j < 1001; ++j) {
       costs[i][j] = new int[1000];
     }
-  }
+    }*/
 
   //    cout << " done" << endl;
 

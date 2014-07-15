@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int grid [4][100][100];
+int grid [4][100][100][2];
 // 0 N
 // 1 W
 // 2 S
@@ -18,50 +18,58 @@ int main() {
     for(i = 0; i < rows; i++) { // build grid
       for(j = 0; j < cols; j++) {
 	cin >> c;
+	grid[0][i][j][1] = 0;
+	grid[1][i][j][1] = 0;
+	grid[2][i][j][1] = 0;
+	grid[3][i][j][1] = 0;
 	switch(c) {
 	case '.':
-	  grid[0][i][j] = 9999999;
-	  grid[1][i][j] = 9999999;
-	  grid[2][i][j] = 9999999;
-	  grid[3][i][j] = 9999999;
+	  grid[0][i][j][0] = 99999999;
+	  grid[1][i][j][0] = 99999999;
+	  grid[2][i][j][0] = 99999999;
+	  grid[3][i][j][0] = 99999999;
 	  break;
 	case '*':
-	  grid[0][i][j] = -1;
-	  grid[1][i][j] = -1;
-	  grid[2][i][j] = -1;
-	  grid[3][i][j] = -1;
+	  grid[0][i][j][0] = -1;
+	  grid[1][i][j][0] = -1;
+	  grid[2][i][j][0] = -1;
+	  grid[3][i][j][0] = -1;
 	  break;
 	case 'X':
 	  targetRow = i;
 	  targetCol = j;
-	  grid[0][i][j] = -2;
-	  grid[1][i][j] = -2;
-	  grid[2][i][j] = -2;
-	  grid[3][i][j] = -2;
+	  grid[0][i][j][0] = -2;
+	  grid[1][i][j][0] = -2;
+	  grid[2][i][j][0] = -2;
+	  grid[3][i][j][0] = -2;
 	  break;
 	case 'N':
-	  grid[0][i][j] = 0;
-	  grid[1][i][j] = 9999999;
-	  grid[2][i][j] = 9999999;
-	  grid[3][i][j] = 9999999;
+	  grid[0][i][j][1] = 1;
+	  grid[0][i][j][0] = 0;
+	  grid[1][i][j][0] = 99999999;
+	  grid[2][i][j][0] = 99999999;
+	  grid[3][i][j][0] = 99999999;
 	  break;
 	case 'W':
-	  grid[0][i][j] = 9999999; 
-	  grid[1][i][j] = 0;
-	  grid[2][i][j] = 9999999;
-	  grid[3][i][j] = 9999999;
+	  grid[1][i][j][1] = 1;
+	  grid[0][i][j][0] = 99999999; 
+	  grid[1][i][j][0] = 0;
+	  grid[2][i][j][0] = 99999999;
+	  grid[3][i][j][0] = 99999999;
 	  break;
 	case 'S':
-	  grid[0][i][j] = 9999999; 
-	  grid[1][i][j] = 9999999;
-	  grid[2][i][j] = 0;
-	  grid[3][i][j] = 9999999;
+	  grid[2][i][j][1] = 1;
+	  grid[0][i][j][0] = 99999999; 
+	  grid[1][i][j][0] = 99999999;
+	  grid[2][i][j][0] = 0;
+	  grid[3][i][j][0] = 99999999;
 	  break;
 	case 'E':
-	  grid[0][i][j] = 9999999; 
-	  grid[1][i][j] = 9999999;
-	  grid[2][i][j] = 9999999;
-	  grid[3][i][j] = 0;
+	  grid[3][i][j][1] = 1;
+	  grid[0][i][j][0] = 99999999; 
+	  grid[1][i][j][0] = 99999999;
+	  grid[2][i][j][0] = 99999999;
+	  grid[3][i][j][0] = 0;
 	  break;
 	}
       }    
@@ -71,56 +79,29 @@ int main() {
     //    printGrid(rows, cols);
     count = 0;
     min = 0;
-    if(grid[0][targetRow][targetCol] != -2) {// N
-      min = grid[0][targetRow][targetCol];
-      for(i = targetRow; i < rows; i++) {
-	if(grid[0][i][targetCol] == -1) {
-	  i = rows;
-	}
-	else if(grid[0][targetRow][targetCol]-1 == grid[0][i][targetCol]) {
-	  ++count;
-	}
-      }
+    if(grid[0][targetRow][targetCol][0] != -2) {// N
+      min = grid[0][targetRow][targetCol][0];
+      count+= grid[0][targetRow][targetCol][1];
     }
-    if(grid[1][targetRow][targetCol] != -2) { // W
-      min = grid[1][targetRow][targetCol];
-      for(i = targetCol; i < cols; i++) {
-	if(grid[1][targetRow][i] == -1) {
-	  i=cols;
-	}
-	else if(grid[1][targetRow][targetCol]-1 == grid[1][targetRow][i]) {
-	  ++count;
-	}
-      }
+    if(grid[1][targetRow][targetCol][0] != -2) { // W
+      min = grid[1][targetRow][targetCol][0];
+      count+= grid[1][targetRow][targetCol][1];
     }
-    if(grid[2][targetRow][targetCol] != -2) { // S
-      min = grid[2][targetRow][targetCol];
-      for(i = targetRow; i > -1; i--) {
-	if(grid[2][i][targetCol] == -1) {
-	  i = -1;
-	}
-	else if(grid[2][targetRow][targetCol]-1 == grid[2][i][targetCol]) {
-	  ++count;
-	}
-      }
+    if(grid[2][targetRow][targetCol][0] != -2) { // S
+      min = grid[2][targetRow][targetCol][0];
+      count+= grid[2][targetRow][targetCol][1];
     }
-    if(grid[3][targetRow][targetCol] != -2) { //E
-      min = grid[3][targetRow][targetCol];
-      for(i = targetCol; i > -1; i--) {
-	if(grid[3][targetRow][i] == -1) {
-	  i = -1;
-	}
-	else if(grid[3][targetRow][targetCol]-1 == grid[3][targetRow][i]) {
-	  ++count;
-	}
-      }
+    if(grid[3][targetRow][targetCol][0] != -2) { //E
+      min = grid[3][targetRow][targetCol][0];
+      count+= grid[3][targetRow][targetCol][1];
     }
-    cout << min << " " << count << endl;
+    
+    cout << min << " " << count % 1000000 << endl;
     cin >> rows >> cols;
   }
 }
 void constructGrid(int rows, int cols)  {
-  int instrNum, d, i, j, k;
+  int instrNum, d, i, j, k, temp;
   bool obstacle;
   bool targetReached = false;
   bool canMove = true;
@@ -129,78 +110,111 @@ void constructGrid(int rows, int cols)  {
     for(d = 0; d < 4; d++) {
       for(i = 0; i < rows; i++) {
 	for(j = 0; j < cols; j++) {
-	  if(grid[d][i][j] == instrNum) {
+	  if(grid[d][i][j][0] == instrNum) {
 	    canMove = true;
 	    //issue instructions
 	    //turn
 	    if(d == 0) {
-	      if(grid[3][i][j] > instrNum) {
-		grid[3][i][j] = instrNum + 1;
+	      if(grid[3][i][j][0] > instrNum) {
+		grid[3][i][j][0] = instrNum + 1;
+		grid[3][i][j][1] += grid[0][i][j][1];
+		temp = grid[3][i][j][1];
+		grid[3][i][j][1] = temp % 1000000;
 	      }
 	    } else {
-	      if(grid[((d -1)% 4)][i][j] > instrNum) {
-		grid[((d -1) %4)][i][j] = instrNum + 1;
+	      if(grid[((d -1)% 4)][i][j][0] > instrNum) {
+		grid[((d -1) %4)][i][j][0] = instrNum + 1;
+		grid[((d -1) %4)][i][j][1] += grid[d][i][j][1];
+		temp = grid[((d -1) %4)][i][j][1];
+		grid[((d -1) %4)][i][j][1] = temp % 1000000;
 	      }
 	    }
-	    if(grid[((d +1)%4)][i][j] > instrNum) {
-	      grid[((d +1)%4)][i][j] = instrNum + 1;
+	    if(grid[((d +1)%4)][i][j][0] > instrNum) {
+	      grid[((d +1)%4)][i][j][0] = instrNum + 1;
+	      grid[((d +1) %4)][i][j][1] += grid[d][i][j][1];
+	      temp = grid[((d +1) %4)][i][j][1];
+	      grid[((d +1) %4)][i][j][1] =  temp % 1000000;
 	    }
 	    //move
 	    obstacle = false;
 	    switch(d)  {
 	    case 0: //N
 	      for(k = i; k > -1 && !obstacle; k--) {
-		if(grid[0][k][j] == -1) {
+		if(grid[0][k][j][0] == -1) {
 		  obstacle = true;
 		}
-		if(grid[0][k][j] == -2) {
+		if(grid[0][k][j][0] == -2) {
 		  targetReached = true;
-		  grid[0][k][j] = instrNum + 1;
+		  grid[0][k][j][0] = instrNum + 1;
+		  grid[0][k][j][1] += grid[0][i][j][1];
+		  temp = grid[0][k][j][1];
+		  grid[0][k][j][1] = temp % 1000000;
 		}
-		if(grid[0][k][j] > instrNum) {
-		  grid[0][k][j] = instrNum + 1;
+		else if(grid[0][k][j][0] > instrNum) {
+		  grid[0][k][j][0] = instrNum + 1;
+		  grid[0][k][j][1] += grid[0][i][j][1];
+		  temp = grid[0][k][j][1];
+		  grid[0][k][j][1] = temp % 1000000;
 		}
 	      }
 	      break;
 	    case 1: // W
 	      for(k = j; k > -1 && !obstacle; k--) {
-		if(grid[1][i][k] == -1) {
+		if(grid[1][i][k][0] == -1) {
 		  obstacle = true;
 		}
-		if(grid[1][i][k] == -2) {
+		if(grid[1][i][k][0] == -2) {
 		  targetReached = true;
-		  grid[1][i][k] = instrNum + 1;
+		  grid[1][i][k][0] = instrNum + 1;
+		  grid[1][i][k][1] += grid[1][i][j][1];
+		  temp = grid[1][i][k][1];
+		  grid[1][i][k][1] = temp % 1000000;
 		}
-		if(grid[1][i][k] > instrNum) {
-		  grid[1][i][k] = instrNum + 1;
+		else if(grid[1][i][k][0] > instrNum) {
+		  grid[1][i][k][0] = instrNum + 1;
+		  grid[1][i][k][1] += grid[1][i][j][1];
+		  temp = grid[1][i][k][1];
+		  grid[1][i][k][1] = temp % 1000000;
 		}
 	      }
 	      break;
 	    case 2: // S
 	      for(k = i; k < rows && !obstacle; k++) {
-		if(grid[2][k][j] == -1) {
+		if(grid[2][k][j][0] == -1) {
 		  obstacle = true;
 		}
-		if(grid[2][k][j] == -2) {
+		if(grid[2][k][j][0] == -2) {
 		  targetReached = true;
-		  grid[2][k][j] = instrNum + 1;
+		  grid[2][k][j][0] = instrNum + 1;
+		  grid[2][k][j][1] += grid[2][i][j][1];
+		  temp = grid[2][k][j][1];
+		  grid[2][k][j][1] = temp % 1000000;
 		}
-		if(grid[2][k][j] > instrNum) {
-		  grid[2][k][j] = instrNum + 1;
+		else if(grid[2][k][j][0] > instrNum) {
+		  grid[2][k][j][0] = instrNum + 1;
+		  grid[2][k][j][1] += grid[2][i][j][1];
+		  temp = grid[2][k][j][1];
+		  grid[2][k][j][1] = temp % 1000000;
 		}
 	      }
 	      break;
 	    case 3: // E
 	      for(k = j; k < cols && !obstacle; k++) {
-		if(grid[3][i][k] == -1) {
+		if(grid[3][i][k][0] == -1) {
 		  obstacle = true;
 		}
-		if(grid[3][i][k] == -2) {
+		if(grid[3][i][k][0] == -2) {
 		  targetReached = true;
-		  grid[3][i][k] = instrNum + 1;
+		  grid[3][i][k][0] = instrNum + 1;
+		  grid[3][i][k][1] += grid[3][i][j][1];
+		  temp = grid[3][i][k][1];
+		  grid[3][i][k][1] = temp % 1000000;
 		}
-		if(grid[3][i][k] > instrNum) {
-		  grid[3][i][k] = instrNum + 1;
+		else if(grid[3][i][k][0] > instrNum) {
+		  grid[3][i][k][0] = instrNum + 1;
+		  grid[3][i][k][1] += grid[3][i][j][1];
+		  temp = grid[3][i][k][1];
+		  grid[3][i][k][1] = temp % 1000000;
 		}
 	      }
 	      break; 
@@ -231,7 +245,7 @@ void printGrid(int rows, int cols) {
     cout << endl;
     for(i = 0; i < rows; i++) {
       for(j = 0; j < cols; j++) {
-	cout << grid[d][i][j] << " ";
+	cout << grid[d][i][j][0] << " ";
       }
       cout << endl;
     }

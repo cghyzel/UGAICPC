@@ -1,9 +1,10 @@
 #include <iostream>
+#include <iomanip>
 #include <cmath>
 
 using namespace std;
 
-const double pi = 3.14159265;
+
 int numSegments, numLanes;
 double  minDist [1001][10]; // Minimum distances to get to a lane
 /**
@@ -27,35 +28,38 @@ int main() {
       case 'S':
 	cin >> distance;
 	for(j = 0; j < numLanes; ++j) {
-	    minDist[i][j] = minDist[i-1][0] + sqrt(distance*distance + (j - 0)*10*(j - 0)*10);
-	  for(k = 1; k < numLanes; ++k) {
-	    if(minDist[i][j] > minDist[i-1][k] + sqrt(distance*distance + (j - k)*10*(j - k)*10)) {
-	      minDist[i][j] = minDist[i-1][k] + sqrt(distance*distance + (j - k)*10*(j - k)*10);
+	  minDist[i][j] = minDist[i-1][j] + distance;
+	    for(k = 0; k < numLanes; ++k) {
+	      if(j - k != 0 && (distance / abs(j-k)) > 99) { 
+		if(minDist[i][j] > minDist[i-1][k] + sqrt(distance*distance + (j - k)*10*(j - k)*10)) {
+		  minDist[i][j] = minDist[i-1][k] + sqrt(distance*distance + (j - k)*10*(j - k)*10);
 	    }
+	      }
 	    
 	  }
-	  cout << minDist[i][j] << endl;	  
+	    //	  cout << minDist[i][j] << endl;	  
 	}
 	break;
       case  'L':
 	cin >> radius;
 	distanceFromRadius = 5;
 	for(j = 0; j < numLanes; ++j) {
-	  minDist[i][j] = minDist[i-1][j] + (pi*(radius - distanceFromRadius)/2);
-	  
+	  minDist[i][j] = minDist[i-1][j] + (M_PI*(radius + distanceFromRadius)/2);
 	  distanceFromRadius += 10;
-	  
-
+	  //cout << minDist[i][j] << endl;	  
 	}
+	
 	break;
       case 'R':
 	cin >> radius;
 	distanceFromRadius = 5;
 	for(j = numLanes -1; j > -1; --j) {
-	  minDist[i][j] = minDist[i-1][j] + (pi*(radius - distanceFromRadius)/2);
+	  minDist[i][j] = minDist[i-1][j] + (M_PI*(radius + distanceFromRadius)/2);
 	  
 	  distanceFromRadius += 10;
+	  //cout << minDist[i][j] << endl;	  
 	}
+
 	break;
       }
 	
@@ -66,7 +70,8 @@ int main() {
 	min = minDist[numSegments][i];
       }
     }
-    cout << min << endl;
+    cout << fixed << setprecision (2);
+    cout << ceil(min* 100) /100 << endl;
     cin >> numSegments >> numLanes;
   }
 }

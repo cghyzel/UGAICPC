@@ -15,7 +15,8 @@ double  minDist [1001][10]; // Minimum distances to get to a lane
  */
 int main() {
   char c;
-  int i, j, k, distanceFromRadius, radius, distance;
+  int i, j, k;
+  double distanceFromRadius, radius, distance;
   cin >> numSegments >> numLanes;
   for( i = 0; i < 10; ++i){
     minDist[0][i] = 0;
@@ -27,16 +28,16 @@ int main() {
       switch(c) {
       case 'S':
 	cin >> distance;
+	
 	for(j = 0; j < numLanes; ++j) {
 	  minDist[i][j] = minDist[i-1][j] + distance;
-	    for(k = 0; k < numLanes; ++k) {
+	  for(k = 0; k < numLanes; ++k) {
 	      if(j - k != 0 && (distance / abs(j-k)) > 99) { 
 		if(minDist[i][j] > minDist[i-1][k] + sqrt(distance*distance + (j - k)*10*(j - k)*10)) {
 		  minDist[i][j] = minDist[i-1][k] + sqrt(distance*distance + (j - k)*10*(j - k)*10);
-	    }
+		}
 	      }
-	    
-	  }
+	    }
 	    //	  cout << minDist[i][j] << endl;	  
 	}
 	break;
@@ -71,7 +72,7 @@ int main() {
       }
     }
     cout << fixed << setprecision (2);
-    cout << ceil(min* 100) /100 << endl;
+    cout << floor(min* 100 + 0.5) /100 << endl;
     cin >> numSegments >> numLanes;
   }
 }

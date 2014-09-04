@@ -1,0 +1,7 @@
+Boyer Moore doesn't really make any sense to me anymore for this problem. The better searching algorithm is Rabin Karp, becuase 
+the boyer moore algorithm will skip a word if there's no letters in the word. This makes no sense for tandem repeats since
+we will be looking for a pattern within one large set of letters.
+
+http://www.geeksforgeeks.org/searching-for-patterns-set-3-rabin-karp-algorithm/
+
+Rabin karp is obviously the better searching algorithm.

@@ -5,3 +5,4 @@ we will be looking for a pattern within one large set of letters.
 http://www.geeksforgeeks.org/searching-for-patterns-set-3-rabin-karp-algorithm/
 
 Rabin karp is obviously the better searching algorithm.
+KMP could work as well. Boyer Moore definitely doesn't make sense for this problem though.
